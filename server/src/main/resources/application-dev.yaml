@@ -1,0 +1,62 @@
+server:
+  port: 8080
+  name: O2-admin
+  ip:
+management:
+  server:
+    port: 8081
+
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://123456/abc?useSSL=false
+    username: abc
+    password: 123456
+    driverClassName: com.mysql.cj.jdbc.Driver
+    #使用Druid 连接池
+    type: com.zaxxer.hikari.HikariDataSource
+    #一下为连接池配置
+    #初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    #配置间隔多久进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    #打开PSCache ，并且指定每个连接上PSCache 的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    #配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall' 用于防火墙
+    filters: stat,wall,log4j
+    #通过connectProperties 属性来打开mergeSql 功能；慢SQL 记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  jpa:
+    hibernate:
+      ddl-auto: update
+      #ddl-auto: none
+    show-sql: true
+
+  jps:
+    #执行sql 语句 打印输出
+    showsql: true
+  devtools:
+    restart:
+      enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  main:
+    allow-bean-definition-overriding: true
