@@ -1,6 +1,6 @@
-package com.dbshs.show.config;
+package beer.o2.config;
 
-import com.dbshs.show.ApplicationStartup;
+import beer.o2.ApplicationStartup;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

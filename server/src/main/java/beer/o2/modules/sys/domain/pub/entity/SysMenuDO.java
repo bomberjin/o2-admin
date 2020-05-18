@@ -1,4 +1,4 @@
-package beer.o2.modules.sys.domain.user;
+package beer.o2.modules.sys.domain.pub.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

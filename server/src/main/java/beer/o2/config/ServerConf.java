@@ -1,4 +1,4 @@
-package com.dbshs.show.config;
+package beer.o2.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

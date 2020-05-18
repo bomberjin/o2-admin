@@ -1,4 +1,4 @@
-package com.dbshs.show;
+package beer.o2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication springApplication =new SpringApplication(com.dbshs.show.ApplicationStartup.class);
-        springApplication.addListeners(new com.dbshs.show.ApplicationStartup());
+        SpringApplication springApplication =new SpringApplication(beer.o2.ApplicationStartup.class);
+        springApplication.addListeners(new beer.o2.ApplicationStartup());
 
         SpringApplication.run(Application.class, args);
     }

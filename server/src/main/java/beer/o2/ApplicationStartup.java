@@ -1,9 +1,7 @@
-package com.dbshs.show;
+package beer.o2;
 
-import com.dbshs.show.config.ServerConf;
+import beer.o2.config.ServerConf;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
