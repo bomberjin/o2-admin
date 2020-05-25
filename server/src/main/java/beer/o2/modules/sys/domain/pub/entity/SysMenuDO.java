@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author:bomber
@@ -51,4 +52,12 @@ public class SysMenuDO {
     private Integer orderNum;
 
 
+    /**
+     * ztree属性
+     */
+    @Transient
+    private Boolean open;
+
+    @Transient
+    private List<?> list;
 }

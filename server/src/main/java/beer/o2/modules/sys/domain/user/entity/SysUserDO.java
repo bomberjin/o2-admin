@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author:bomber
@@ -59,5 +60,7 @@ public class SysUserDO {
     @Column(columnDefinition = "datetime default null comment '创建时间'")
     private Date createTime;
 
+    @Transient
+    private List<Long> roleIdList;
 
 }
