@@ -11,9 +11,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://123456/abc?useSSL=false
-    username: abc
-    password: 123456
+    url: jdbc:mysql://rm-uf6z6pl7g5kxej1n0zo.mysql.rds.aliyuncs.com/o2-admin-test?useSSL=false
+    username: o2_user_test
+    password: HdEijgbG27qtKJkW
     driverClassName: com.mysql.cj.jdbc.Driver
     #使用Druid 连接池
     type: com.zaxxer.hikari.HikariDataSource

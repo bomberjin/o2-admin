@@ -1,5 +1,6 @@
 package beer.o2.modules.sys.domain.role.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author:bomber
@@ -46,5 +48,8 @@ public class SysRoleDO {
 
     @Column(columnDefinition = "bigint(20) comment '创建者ID'")
     private Long createUserId;
+
+    @Transient
+    private List<Long> menuIdList;
 
 }

@@ -1,17 +1,20 @@
 
 package beer.o2.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.renren.common.utils.R;
-import io.renren.modules.sys.dao.SysUserTokenDao;
-import io.renren.modules.sys.entity.SysUserTokenEntity;
-import io.renren.modules.sys.oauth2.TokenGenerator;
-import io.renren.modules.sys.service.SysUserTokenService;
+import beer.o2.common.domain.NormalResult;
+import beer.o2.modules.sys.dao.SysUserTokenRepository;
+import beer.o2.modules.sys.domain.user.entity.SysUserTokenDO;
+import beer.o2.modules.sys.domain.user.vo.UserTokenResponseVO;
+import beer.o2.modules.sys.oauth2.TokenGenerator;
+import beer.o2.modules.sys.service.SysUserTokenService;
+import com.baomidou.mybatisplus.extension.api.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 
 @Service
@@ -21,9 +24,11 @@ public class SysUserTokenServiceImpl  implements SysUserTokenService {
 	//12小时后过期
 	private final static int EXPIRE = 3600 * 12;
 
+	@Autowired
+	SysUserTokenRepository sysUserTokenRepository;
 
 	@Override
-	public R createToken(long userId) {
+	public NormalResult createToken(long userId) {
 		//生成一个token
 		String token = TokenGenerator.generateValue();
 
@@ -33,28 +38,31 @@ public class SysUserTokenServiceImpl  implements SysUserTokenService {
 		Date expireTime = new Date(now.getTime() + EXPIRE * 1000);
 
 		//判断是否生成过token
-		SysUserTokenEntity tokenEntity = this.getById(userId);
-		if(tokenEntity == null){
-			tokenEntity = new SysUserTokenEntity();
+		Optional<SysUserTokenDO> byId = sysUserTokenRepository.findById(userId);
+
+		if(!byId.isPresent()){
+			SysUserTokenDO tokenEntity = new SysUserTokenDO();
 			tokenEntity.setUserId(userId);
 			tokenEntity.setToken(token);
 			tokenEntity.setUpdateTime(now);
 			tokenEntity.setExpireTime(expireTime);
 
-			//保存token
-			this.save(tokenEntity);
+			sysUserTokenRepository.save(tokenEntity);
+
 		}else{
+			SysUserTokenDO tokenEntity = byId.get();
 			tokenEntity.setToken(token);
 			tokenEntity.setUpdateTime(now);
 			tokenEntity.setExpireTime(expireTime);
 
-			//更新token
-			this.updateById(tokenEntity);
+			sysUserTokenRepository.save(tokenEntity);
+
 		}
 
-		R r = R.ok().put("token", token).put("expire", EXPIRE);
-
-		return r;
+		return NormalResult.success(UserTokenResponseVO.builder()
+				.expire(EXPIRE)
+				.token(token)
+				.build());
 	}
 
 	@Override
@@ -63,9 +71,10 @@ public class SysUserTokenServiceImpl  implements SysUserTokenService {
 		String token = TokenGenerator.generateValue();
 
 		//修改token
-		SysUserTokenEntity tokenEntity = new SysUserTokenEntity();
+		SysUserTokenDO tokenEntity = new SysUserTokenDO();
 		tokenEntity.setUserId(userId);
 		tokenEntity.setToken(token);
-		this.updateById(tokenEntity);
+
+		sysUserTokenRepository.save(tokenEntity);
 	}
 }
