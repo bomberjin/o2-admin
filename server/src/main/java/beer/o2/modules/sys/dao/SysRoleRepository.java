@@ -18,4 +18,5 @@ public interface SysRoleRepository extends JpaRepository<SysRoleDO,Long> {
     List<SysRoleDO> findAllByCreateUserId(Long createUserId);
 
     Page<SysRoleDO> findAllByCreateUserId(Long createUserId, Pageable pageable);
+
 }

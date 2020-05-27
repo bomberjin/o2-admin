@@ -7,7 +7,6 @@ import beer.o2.modules.sys.domain.user.entity.SysUserTokenDO;
 import beer.o2.modules.sys.domain.user.vo.UserTokenResponseVO;
 import beer.o2.modules.sys.oauth2.TokenGenerator;
 import beer.o2.modules.sys.service.SysUserTokenService;
-import com.baomidou.mybatisplus.extension.api.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

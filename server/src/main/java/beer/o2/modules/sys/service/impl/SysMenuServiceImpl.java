@@ -80,6 +80,27 @@ public class SysMenuServiceImpl implements SysMenuService {
         sysRoleMenuRepository.deleteAllByMenuId(menuId);
     }
 
+    @Override
+    public List<SysMenuDO> list() {
+
+        return sysMenuRepository.findAll();
+    }
+
+    @Override
+    public SysMenuDO getById(Long id) {
+        return sysMenuRepository.findById(id).get();
+    }
+
+    @Override
+    public void save(SysMenuDO menu) {
+        sysMenuRepository.save(menu);
+    }
+
+    @Override
+    public void updateById(SysMenuDO menu) {
+        sysMenuRepository.save(menu);
+    }
+
     /**
      * 获取所有菜单列表
      */

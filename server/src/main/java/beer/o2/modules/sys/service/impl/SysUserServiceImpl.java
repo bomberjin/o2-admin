@@ -128,6 +128,11 @@ public class SysUserServiceImpl implements SysUserService {
         return true;
     }
 
+    @Override
+    public SysUserDO getById(Long userId) {
+        return sysUserRepository.getOne(userId);
+    }
+
     /**
      * 检查角色是否越权
      */

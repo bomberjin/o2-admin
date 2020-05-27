@@ -26,4 +26,8 @@ public interface SysRoleService {
      * 查询用户创建的角色ID列表
      */
     List<Long> queryRoleIdList(Long createUserId);
+
+    SysRoleDO getById(Long roleId);
+
+    List<SysRoleDO> listByMap(Long  userId);
 }

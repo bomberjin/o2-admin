@@ -8,16 +8,14 @@ import beer.o2.modules.sys.service.SysRoleMenuService;
 import beer.o2.modules.sys.service.SysRoleService;
 import beer.o2.modules.sys.service.SysUserRoleService;
 import beer.o2.modules.sys.service.SysUserService;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +106,25 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public List<Long> queryRoleIdList(Long createUserId) {
         return sysRoleRepository.findAllByCreateUserId(createUserId).stream().map(SysRoleDO::getRoleId).collect(Collectors.toList());
+    }
+
+    @Override
+    public SysRoleDO getById(Long roleId) {
+        return sysRoleRepository.findById(roleId).get();
+    }
+
+    @Override
+    public List<SysRoleDO> listByMap(Long userId) {
+
+        List<SysRoleDO> user = new ArrayList<>();
+
+         if(userId==0L){
+             user= sysRoleRepository.findAll();
+         }else{
+             user = sysRoleRepository.findAllByCreateUserId(userId);
+         }
+
+        return user;
     }
 
     /**
