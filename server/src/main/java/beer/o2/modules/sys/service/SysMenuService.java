@@ -39,4 +39,11 @@ public interface SysMenuService {
      * 删除
      */
     void delete(Long menuId);
+
+    List<SysMenuDO> list();
+
+    SysMenuDO getById(Long id);
+
+    void save(SysMenuDO menu);
+    void updateById(SysMenuDO menu);
 }

@@ -55,4 +55,6 @@ public interface SysUserService  {
 	 * @param newPassword  新密码
 	 */
 	boolean updatePassword(Long userId, String password, String newPassword);
+
+	SysUserDO getById(Long userId);
 }

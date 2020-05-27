@@ -60,4 +60,7 @@ public class SysMenuDO {
 
     @Transient
     private List<?> list;
+
+    @Transient
+    private String parentName;
 }
