@@ -3,6 +3,7 @@ package beer.o2.modules.sys.service;
 import beer.o2.modules.sys.domain.pub.entity.SysMenuDO;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author:bomber
@@ -42,7 +43,7 @@ public interface SysMenuService {
 
     List<SysMenuDO> list();
 
-    SysMenuDO getById(Long id);
+    Optional<SysMenuDO> getById(Long id);
 
     void save(SysMenuDO menu);
     void updateById(SysMenuDO menu);

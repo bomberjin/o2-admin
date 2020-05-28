@@ -48,7 +48,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         String roleName = (String)params.get("roleName");
         Long createUserId = (Long)params.get("createUserId");
 
-        PageRequest request = PageRequest.of((int) params.get("page"), (int) params.get("size"));
+        PageRequest request = PageRequest.of((int) params.get("page"), (int) params.get("limit"));
 
         //TODO like 角色名没有实现
 
@@ -60,7 +60,7 @@ public class SysRoleServiceImpl implements SysRoleService {
             all=sysRoleRepository.findAll(request);
         }
 
-        return new PageUtils(all.getContent(),(int)all.getTotalElements(),(int)params.get("size"),(int)params.get("Page"));
+        return new PageUtils(all.getContent(),(int)all.getTotalElements(),(int)params.get("limit"),(int)params.get("Page"));
     }
 
     @Override

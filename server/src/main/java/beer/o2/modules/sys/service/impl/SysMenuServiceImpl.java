@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author:bomber
@@ -87,8 +88,10 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public SysMenuDO getById(Long id) {
-        return sysMenuRepository.findById(id).get();
+    public Optional<SysMenuDO> getById(Long id) {
+
+         return sysMenuRepository.findById(id);
+
     }
 
     @Override

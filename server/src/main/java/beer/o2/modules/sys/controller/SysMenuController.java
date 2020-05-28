@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -54,9 +55,9 @@ public class SysMenuController extends AbstractController {
 	public List<SysMenuDO> list(){
 		List<SysMenuDO> menuList = sysMenuService.list();
 		for(SysMenuDO sysMenuEntity : menuList){
-			SysMenuDO parentMenuEntity = sysMenuService.getById(sysMenuEntity.getParentId());
-			if(parentMenuEntity != null){
-				sysMenuEntity.setParentName(parentMenuEntity.getName());
+			Optional<SysMenuDO> byId = sysMenuService.getById(sysMenuEntity.getParentId());
+			if(byId.isPresent()){
+				sysMenuEntity.setParentName(byId.get().getName());
 			}
 		}
 
@@ -94,10 +95,10 @@ public class SysMenuController extends AbstractController {
 	@GetMapping("/info/{menuId}")
 	@RequiresPermissions("sys:menu:info")
 	public NormalResult<SysMenuResponseVO> info(@PathVariable("menuId") Long menuId){
-		SysMenuDO menu = sysMenuService.getById(menuId);
+		Optional<SysMenuDO> byId = sysMenuService.getById(menuId);
 		return NormalResult.success(
 				SysMenuResponseVO.builder()
-						.menu(menu)
+						.menu(byId.get())
 						.build()
 		);
 
@@ -174,7 +175,7 @@ public class SysMenuController extends AbstractController {
 		//上级菜单类型
 		int parentType = Constant.MenuType.CATALOG.getValue();
 		if(menu.getParentId() != 0){
-			SysMenuDO parentMenu = sysMenuService.getById(menu.getParentId());
+			SysMenuDO parentMenu = sysMenuService.getById(menu.getParentId()).get();
 			parentType = parentMenu.getType();
 		}
 		

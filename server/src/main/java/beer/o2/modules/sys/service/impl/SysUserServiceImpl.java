@@ -9,9 +9,6 @@ import beer.o2.modules.sys.domain.user.entity.SysUserDO;
 import beer.o2.modules.sys.service.SysRoleService;
 import beer.o2.modules.sys.service.SysUserRoleService;
 import beer.o2.modules.sys.service.SysUserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
@@ -20,7 +17,6 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +41,7 @@ public class SysUserServiceImpl implements SysUserService {
     public PageUtils queryPage(Map<String, Object> params) {
         String username = (String) params.get("username");
         Long createUserId = (Long) params.get("createUserId");
-        PageRequest request = PageRequest.of((int) params.get("page"), (int) params.get("size"));
+        PageRequest request = PageRequest.of(Integer.parseInt( params.get("page").toString())-1, Integer.parseInt( params.get("limit").toString()));
 
         //TODO like 用户名没有实现
         Page<SysUserDO> allByCreateUserId = null;
@@ -56,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
         }
 
 
-        return new PageUtils(allByCreateUserId.getContent(), (int) allByCreateUserId.getTotalElements(), (int) params.get("size"), (int) params.get("page"));
+        return new PageUtils(allByCreateUserId.getContent(), (int) allByCreateUserId.getTotalElements(), Integer.parseInt( params.get("limit").toString()), Integer.parseInt( params.get("page").toString()));
     }
 
     @Override
