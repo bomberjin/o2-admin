@@ -2,12 +2,19 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    sourceType: 'module'
+    parser: "babel-eslint",
+    ecmaVersion: 2018,
+    sourceType: "module"
   },
   env: {
     browser: true,
+    es6: true,
+    node: true,
+    commonjs: true,
+  },
+  globals: {
   },
   // https://github.com/standard/standard/blob/master/docs/RULES-en.md
   extends: 'standard',

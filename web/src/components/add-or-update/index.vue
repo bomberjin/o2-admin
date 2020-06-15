@@ -19,88 +19,89 @@
 </template>
 
 <script>
-  import RenderSlot from '../renderSlot'
-  export default {
-    props: {
-      formItems: Array,
-      saveOrUpdateUrl: String,
-      getFormDateUrl: String,
-      width: {
-        type: String,
-        default: '50%'
-      }
-    },
-    data () {
-      return {
-        visible: false,
-        dataForm: {}
-      }
-    },
-    components: {
-      RenderSlot
-    },
-    created () {
-      let obj = {}
-      this.formItems.forEach(a => {
-        obj = {...obj, ...{[a.prop]: ''}}
+import RenderSlot from '../renderSlot'
+export default {
+  props: {
+    formItems: Array,
+    saveOrUpdateUrl: String,
+    getFormDateUrl: String,
+    width: {
+      type: String,
+      default: '50%'
+    }
+  },
+  data () {
+    return {
+      visible: false,
+      dataForm: {}
+    }
+  },
+  components: {
+    RenderSlot
+  },
+  created () {
+    let obj = {}
+    this.formItems.forEach(a => {
+      obj = {...obj, ...{[a.prop]: ''}}
+    })
+    this.dataForm = obj
+  },
+  methods: {
+    async init (id) {
+      this.dataForm.id = id || 0
+      this.visible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].resetFields()
       })
-      this.dataForm = obj
-    },
-    methods: {
-      async init (id) {
-        this.dataForm.id = id || 0
-        this.visible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
-        })
 
-        if (this.dataForm.id) {
-          let json = await this.$http({
-            url: this.$http.adornUrl(`${this.getFormDateUrl}`),
-            method: 'post',
-            params: this.$http.adornParams({id: this.dataForm.id})
-          })
-          const { data } = json
-          if (data && data.code === 0) {
-            this.dataForm = JSON.parse(JSON.stringify(data.data))
-            this.dataForm.id = id
-          }
-        }
-
-        if (this.$emit('initCallBack')) {
-          this.$emit('initCallBack', this.dataForm)
-        }
-      },
-      // 表单提交
-      dataFormSubmit () {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.$http({
-              url: this.$http.adornUrl(`${this.saveOrUpdateUrl}/${!this.dataForm.id ? 'save' : 'update'}`),
-              method: 'post',
-              data: this.$http.adornData(this.dataForm)
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  duration: 1500,
-                  onClose: () => {
-                    this.visible = false
-                    this.$emit('refreshDataList')
-                  }
-                })
-              } else {
-                this.$message.error(data.msg)
-              }
-            })
-          }
+      if (this.dataForm.id) {
+        let json = await this.$http({
+          url: this.$http.adornUrl(`${this.getFormDateUrl}`),
+          method: 'post',
+          params: this.$http.adornParams({id: this.dataForm.id})
         })
+        const { data } = json
+        if (data && data.code === 0) {
+          this.dataForm = JSON.parse(JSON.stringify(data.data))
+          this.dataForm.id = id
+        }
       }
+
+      if (this.$emit('initCallBack')) {
+        this.$emit('initCallBack', this.dataForm)
+      }
+    },
+    // 表单提交
+    dataFormSubmit () {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl(`${this.saveOrUpdateUrl}/${!this.dataForm.id ? 'save' : 'update'}`),
+            method: 'post',
+            data: this.$http.adornData(this.dataForm)
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.visible = false
+                  this.$emit('refreshDataList')
+                }
+              })
+            } else {
+              this.$message.error(data.msg)
+            }
+          })
+        }
+      })
     }
   }
+}
 </script>
-<style>
+
+<style lang="scss">
   .add-or-update-form .el-form-item__label{
     overflow: hidden;
     text-overflow:ellipsis;

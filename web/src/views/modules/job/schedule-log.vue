@@ -81,72 +81,72 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        visible: false,
-        dataForm: {
-          id: ''
-        },
-        dataList: [],
-        pageIndex: 1,
-        pageSize: 10,
-        totalPage: 0,
-        dataListLoading: false
-      }
+export default {
+  data () {
+    return {
+      visible: false,
+      dataForm: {
+        id: ''
+      },
+      dataList: [],
+      pageIndex: 1,
+      pageSize: 10,
+      totalPage: 0,
+      dataListLoading: false
+    }
+  },
+  methods: {
+    init () {
+      this.visible = true
+      this.getDataList()
     },
-    methods: {
-      init () {
-        this.visible = true
-        this.getDataList()
-      },
-      // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl('/sys/scheduleLog/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'jobId': this.dataForm.id
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
-          } else {
-            this.dataList = []
-            this.totalPage = 0
-          }
-          this.dataListLoading = false
+    // 获取数据列表
+    getDataList () {
+      this.dataListLoading = true
+      this.$http({
+        url: this.$http.adornUrl('/sys/scheduleLog/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'page': this.pageIndex,
+          'limit': this.pageSize,
+          'jobId': this.dataForm.id
         })
-      },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
-      },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
-      },
-      // 失败信息
-      showErrorInfo (id) {
-        this.$http({
-          url: this.$http.adornUrl(`/sys/scheduleLog/info/${id}`),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.$alert(data.log.error)
-          } else {
-            this.$message.error(data.msg)
-          }
-        })
-      }
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+          this.dataList = data.page.list
+          this.totalPage = data.page.totalCount
+        } else {
+          this.dataList = []
+          this.totalPage = 0
+        }
+        this.dataListLoading = false
+      })
+    },
+    // 每页数
+    sizeChangeHandle (val) {
+      this.pageSize = val
+      this.pageIndex = 1
+      this.getDataList()
+    },
+    // 当前页
+    currentChangeHandle (val) {
+      this.pageIndex = val
+      this.getDataList()
+    },
+    // 失败信息
+    showErrorInfo (id) {
+      this.$http({
+        url: this.$http.adornUrl(`/sys/scheduleLog/info/${id}`),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+          this.$alert(data.log.error)
+        } else {
+          this.$message.error(data.msg)
+        }
+      })
     }
   }
+}
 </script>

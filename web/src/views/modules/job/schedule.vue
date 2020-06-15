@@ -99,203 +99,203 @@
 </template>
 
 <script>
-  import AddOrUpdate from './schedule-add-or-update'
-  import Log from './schedule-log'
-  export default {
-    data () {
-      return {
-        dataForm: {
-          beanName: ''
-        },
-        dataList: [],
-        pageIndex: 1,
-        pageSize: 10,
-        totalPage: 0,
-        dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false,
-        logVisible: false
-      }
+import AddOrUpdate from './schedule-add-or-update'
+import Log from './schedule-log'
+export default {
+  data () {
+    return {
+      dataForm: {
+        beanName: ''
+      },
+      dataList: [],
+      pageIndex: 1,
+      pageSize: 10,
+      totalPage: 0,
+      dataListLoading: false,
+      dataListSelections: [],
+      addOrUpdateVisible: false,
+      logVisible: false
+    }
+  },
+  components: {
+    AddOrUpdate,
+    Log
+  },
+  activated () {
+    this.getDataList()
+  },
+  methods: {
+    // 获取数据列表
+    getDataList () {
+      this.dataListLoading = true
+      this.$http({
+        url: this.$http.adornUrl('/sys/schedule/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+          'page': this.pageIndex,
+          'limit': this.pageSize,
+          'beanName': this.dataForm.beanName
+        })
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+          this.dataList = data.page.list
+          this.totalPage = data.page.totalCount
+        } else {
+          this.dataList = []
+          this.totalPage = 0
+        }
+        this.dataListLoading = false
+      })
     },
-    components: {
-      AddOrUpdate,
-      Log
-    },
-    activated () {
+    // 每页数
+    sizeChangeHandle (val) {
+      this.pageSize = val
+      this.pageIndex = 1
       this.getDataList()
     },
-    methods: {
-      // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
+    // 当前页
+    currentChangeHandle (val) {
+      this.pageIndex = val
+      this.getDataList()
+    },
+    // 多选
+    selectionChangeHandle (val) {
+      this.dataListSelections = val
+    },
+    // 新增 / 修改
+    addOrUpdateHandle (id) {
+      this.addOrUpdateVisible = true
+      this.$nextTick(() => {
+        this.$refs.addOrUpdate.init(id)
+      })
+    },
+    // 删除
+    deleteHandle (id) {
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.jobId
+      })
+      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/sys/schedule/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'beanName': this.dataForm.beanName
-          })
+          url: this.$http.adornUrl('/sys/schedule/delete'),
+          method: 'post',
+          data: this.$http.adornData(ids, false)
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
           } else {
-            this.dataList = []
-            this.totalPage = 0
+            this.$message.error(data.msg)
           }
-          this.dataListLoading = false
         })
-      },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
-      },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
-      },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
+      }).catch(() => {})
+    },
+    // 暂停
+    pauseHandle (id) {
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.jobId
+      })
+      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '暂停' : '批量暂停'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl('/sys/schedule/pause'),
+          method: 'post',
+          data: this.$http.adornData(ids, false)
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
         })
-      },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.jobId
+      }).catch(() => {})
+    },
+    // 恢复
+    resumeHandle (id) {
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.jobId
+      })
+      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '恢复' : '批量恢复'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl('/sys/schedule/resume'),
+          method: 'post',
+          data: this.$http.adornData(ids, false)
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/sys/schedule/delete'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        }).catch(() => {})
-      },
-      // 暂停
-      pauseHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.jobId
+      }).catch(() => {})
+    },
+    // 立即执行
+    runHandle (id) {
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.jobId
+      })
+      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '立即执行' : '批量立即执行'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl('/sys/schedule/run'),
+          method: 'post',
+          data: this.$http.adornData(ids, false)
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.getDataList()
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '暂停' : '批量暂停'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/sys/schedule/pause'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        }).catch(() => {})
-      },
-      // 恢复
-      resumeHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.jobId
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '恢复' : '批量恢复'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/sys/schedule/resume'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        }).catch(() => {})
-      },
-      // 立即执行
-      runHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.jobId
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '立即执行' : '批量立即执行'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$http({
-            url: this.$http.adornUrl('/sys/schedule/run'),
-            method: 'post',
-            data: this.$http.adornData(ids, false)
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              this.$message.error(data.msg)
-            }
-          })
-        }).catch(() => {})
-      },
-      // 日志列表
-      logHandle () {
-        this.logVisible = true
-        this.$nextTick(() => {
-          this.$refs.log.init()
-        })
-      }
+      }).catch(() => {})
+    },
+    // 日志列表
+    logHandle () {
+      this.logVisible = true
+      this.$nextTick(() => {
+        this.$refs.log.init()
+      })
     }
   }
+}
 </script>

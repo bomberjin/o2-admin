@@ -2,18 +2,18 @@
   <div class="site-wrapper site-page--login">
     <div class="site-content__wrapper">
       <div class="site-content">
-        <div class="brand-info">
-          <h2 class="brand-info__text">renren-fast-vue</h2>
-          <p class="brand-info__intro">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
+        <div class="login-title">
+          <img :src="require('@/assets/img/logo.png')" style="width:80px;height:80px;" alt="">
+          人人快速开发平台
         </div>
         <div class="login-main">
-          <h3 class="login-title">管理员登录</h3>
-          <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
+
+          <el-form class="login-form" :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
             <el-form-item prop="userName">
-              <el-input v-model="dataForm.userName" placeholder="帐号"></el-input>
+              <el-input prefix-icon='el-icon-s-custom' v-model="dataForm.userName" placeholder="帐号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
+              <el-input prefix-icon='el-icon-lock' v-model="dataForm.password" type="password" placeholder="密码"></el-input>
             </el-form-item>
             <el-form-item prop="captcha">
               <el-row :gutter="20">
@@ -26,9 +26,9 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item> -->
               <el-button class="login-btn-submit" type="primary" @click="dataFormSubmit()">登录</el-button>
-            </el-form-item>
+            <!-- </el-form-item> -->
           </el-form>
         </div>
       </div>
@@ -37,66 +37,66 @@
 </template>
 
 <script>
-  import { getUUID } from '@/utils'
-  export default {
-    data () {
-      return {
-        dataForm: {
-          userName: '',
-          password: '',
-          uuid: '',
-          captcha: ''
-        },
-        dataRule: {
-          userName: [
-            { required: true, message: '帐号不能为空', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '密码不能为空', trigger: 'blur' }
-          ],
-          captcha: [
-            { required: true, message: '验证码不能为空', trigger: 'blur' }
-          ]
-        },
-        captchaPath: ''
-      }
-    },
-    created () {
-      this.getCaptcha()
-    },
-    methods: {
-      // 提交表单
-      dataFormSubmit () {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.$http({
-              url: this.$http.adornUrl('/sys/login'),
-              method: 'post',
-              data: this.$http.adornData({
-                'username': this.dataForm.userName,
-                'password': this.dataForm.password,
-                'uuid': this.dataForm.uuid,
-                'captcha': this.dataForm.captcha
-              })
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.$cookie.set('token', data.token)
-                this.$router.replace({ name: 'home' })
-              } else {
-                this.getCaptcha()
-                this.$message.error(data.msg)
-              }
-            })
-          }
-        })
+import { getUUID } from '@/utils'
+export default {
+  data () {
+    return {
+      dataForm: {
+        userName: '',
+        password: '',
+        uuid: '',
+        captcha: ''
       },
-      // 获取验证码
-      getCaptcha () {
-        this.dataForm.uuid = getUUID()
-        this.captchaPath = this.$http.adornUrl(`/captcha.jpg?uuid=${this.dataForm.uuid}`)
-      }
+      dataRule: {
+        userName: [
+          { required: true, message: '帐号不能为空', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' }
+        ],
+        captcha: [
+          { required: true, message: '验证码不能为空', trigger: 'blur' }
+        ]
+      },
+      captchaPath: ''
+    }
+  },
+  created () {
+    this.getCaptcha()
+  },
+  methods: {
+    // 提交表单
+    dataFormSubmit () {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl('/sys/login'),
+            method: 'post',
+            data: this.$http.adornData({
+              'username': this.dataForm.userName,
+              'password': this.dataForm.password,
+              'uuid': this.dataForm.uuid,
+              'captcha': this.dataForm.captcha
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$cookie.set('token', data.token)
+              this.$router.replace({ name: 'home' })
+            } else {
+              this.getCaptcha()
+              this.$message.error(data.msg)
+            }
+          })
+        }
+      })
+    },
+    // 获取验证码
+    getCaptcha () {
+      this.dataForm.uuid = getUUID()
+      this.captchaPath = this.$http.adornUrl(`/captcha.jpg?uuid=${this.dataForm.uuid}`)
     }
   }
+}
 </script>
 
 <style lang="scss">
@@ -106,7 +106,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(38, 50, 56, .6);
     overflow: hidden;
     &:before {
       position: fixed;
@@ -116,7 +115,7 @@
       width: 100%;
       height: 100%;
       content: "";
-      background-image: url(~@/assets/img/login_bg.jpg);
+      background-image: url(~@/assets/img/login_bg.png);
       background-size: cover;
     }
     .site-content__wrapper {
@@ -130,14 +129,21 @@
       overflow-x: hidden;
       overflow-y: auto;
       background-color: transparent;
+
+      .el-form{
+        .el-form-item{
+          margin-bottom: 26px;
+        }
+
+        .el-input{
+          .el-input__inner{
+            border-radius: 18px;
+          }
+        }
+      }
     }
     .site-content {
       min-height: 100%;
-      padding: 30px 500px 30px 30px;
-    }
-    .brand-info {
-      margin: 220px 100px 0 90px;
-      color: #fff;
     }
     .brand-info__text {
       margin:  0 0 22px 0;
@@ -153,15 +159,22 @@
     }
     .login-main {
       position: absolute;
-      top: 0;
-      right: 0;
-      padding: 150px 60px 180px;
-      width: 470px;
-      min-height: 100%;
-      background-color: #fff;
+      top: 45%;
+      transform: translateY(-50%);
+      right: 17%;
+      width: 20%;
     }
     .login-title {
-      font-size: 16px;
+      font-size: 34px;
+      font-weight: 500;
+      color: #4382F0;
+      letter-spacing: 10px;
+      text-align: center;
+      position: absolute;
+      right: 11%;
+      top: 18%;
+      transform: translateY(-50%);
+      width: 36%;
     }
     .login-captcha {
       overflow: hidden;
@@ -172,7 +185,19 @@
     }
     .login-btn-submit {
       width: 100%;
-      margin-top: 38px;
+      margin-top: 15px;
+      background:linear-gradient(270deg,rgba(82,128,249,1) 0%,rgba(64,52,221,1) 100%);
+      border-radius:37px;
+      height:50px;
+      border-color: rgba(82,128,249,1);
+
+      span{
+        font-family:'PingFang SC';
+        font-size: 16px;
+        font-weight: 600;
+        opacity: 0.87;
+        letter-spacing: 2px;
+      }
     }
   }
 </style>

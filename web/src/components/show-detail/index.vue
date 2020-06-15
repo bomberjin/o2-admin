@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog    
+    <el-dialog
     title="详情"
     :close-on-click-modal="false"
     :width="width"
@@ -16,10 +16,10 @@
         </el-col>
       </el-row>
     </el-form>
-    
+
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="visible = false">确定</el-button>
-    </span>      
+    </span>
     </el-dialog>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   .show-detail .el-form-item__label{
     overflow: hidden;
     text-overflow:ellipsis;

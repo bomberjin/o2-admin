@@ -21,6 +21,40 @@ const globalRoutes = [
   { path: '/login', component: _import('common/login'), name: 'login', meta: { title: '登录' } }
 ]
 
+// const fileJson = [{
+//   folderName: 'bikeService',
+//   file: [{
+//     title: '单车服务商取证单列表',
+//     name: 'evidenceList',
+//     isTab: true
+//   }, {
+//     title: '单车服务商处罚列表',
+//     name: 'publishList',
+//     isTab: true
+//   }]
+// }, {
+//   folderName: 'driver',
+//   file: [{
+//     title: '司机清运单列表',
+//     name: 'clearanceList',
+//     isTab: true
+//   }, {
+//     title: '司机交付单列表',
+//     name: 'deliveryNoteList',
+//     isTab: true
+//   }]
+// }]
+
+// function addRouter (x) {
+//   return x.map(a => (
+//     a.file.map(b => (
+//       { path: `/${a.folderName}-${b.name}`, component: _import(`${a.folderName}/${b.name}`), name: `${a.folderName}-${b.name}`, meta: { title: a.title, isTab: b.isTab } }
+//     ))
+//   )).flat()
+// }
+
+// console.log(addRouter(fileJson))
+
 // 主入口路由(需嵌套上左右整体布局)
 const mainRoutes = {
   path: '/',

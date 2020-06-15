@@ -11,7 +11,7 @@
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
-      style="width: 100%;" 
+      style="width: 100%;"
       >
       <el-table-column
         type="selection"
@@ -43,7 +43,7 @@
 
           <el-button v-if="isAuth('sys:user:update')&&useDefultOperate" type="text" size="small" @click="addOrUpdateHandle(scope.row[rowIdName])">修改</el-button>
           <el-button v-if="isAuth('sys:user:delete')&&useDefultOperate" type="text" size="small" @click="deleteHandle(scope.row[rowIdName])">删除</el-button>
-          <el-button v-if="isAuth('sys:user:update')&&onlyCanSaveAndChange" type="text" size="small" @click="addOrUpdateHandle(scope.row[rowIdName])">修改</el-button> 
+          <el-button v-if="isAuth('sys:user:update')&&onlyCanSaveAndChange" type="text" size="small" @click="addOrUpdateHandle(scope.row[rowIdName])">修改</el-button>
         </template>
       </el-table-column>
 
@@ -58,8 +58,8 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <add-or-update 
-      v-if="addOrUpdateVisible" 
+    <add-or-update
+      v-if="addOrUpdateVisible"
       ref="addOrUpdate"
       @refreshDataList="getDataList"
       :formItems="formItems"
@@ -69,7 +69,6 @@
       @initCallBack="initCallBack"
     ></add-or-update>
 
-    
   </div>
 </template>
 
@@ -146,7 +145,7 @@ export default {
     this.getDataList()
   },
   methods: {
-      // 获取数据列表
+    // 获取数据列表
     getDataList () {
       this.dataListLoading = true
       this.$http({
@@ -173,18 +172,18 @@ export default {
         this.dataListLoading = false
       })
     },
-      // 每页数
+    // 每页数
     sizeChangeHandle (val) {
       this.pageSize = val
       this.pageIndex = 1
       this.getDataList()
     },
-      // 当前页
+    // 当前页
     currentChangeHandle (val) {
       this.pageIndex = val
       this.getDataList()
     },
-      // 多选
+    // 多选
     selectionChangeHandle (val) {
       this.dataListSelections = val
     },

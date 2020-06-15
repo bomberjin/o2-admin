@@ -83,51 +83,50 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        visible: false,
-        dataForm: {},
-        dataRule: {}
-      }
+export default {
+  data () {
+    return {
+      visible: false,
+      dataForm: {},
+      dataRule: {}
+    }
+  },
+  methods: {
+    init (id) {
+      this.visible = true
+      this.$http({
+        url: this.$http.adornUrl('/sys/oss/config'),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({data}) => {
+        this.dataForm = data && data.code === 0 ? data.config : []
+      })
     },
-    methods: {
-      init (id) {
-        this.visible = true
-        this.$http({
-          url: this.$http.adornUrl('/sys/oss/config'),
-          method: 'get',
-          params: this.$http.adornParams()
-        }).then(({data}) => {
-          this.dataForm = data && data.code === 0 ? data.config : []
-        })
-      },
-      // 表单提交
-      dataFormSubmit () {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.$http({
-              url: this.$http.adornUrl('/sys/oss/saveConfig'),
-              method: 'post',
-              data: this.$http.adornData(this.dataForm)
-            }).then(({data}) => {
-              if (data && data.code === 0) {
-                this.$message({
-                  message: '操作成功',
-                  type: 'success',
-                  duration: 1500,
-                  onClose: () => {
-                    this.visible = false
-                  }
-                })
-              } else {
-                this.$message.error(data.msg)
-              }
-            })
-          }
-        })
-      }
+    // 表单提交
+    dataFormSubmit () {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl('/sys/oss/saveConfig'),
+            method: 'post',
+            data: this.$http.adornData(this.dataForm)
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.visible = false
+                }
+              })
+            } else {
+              this.$message.error(data.msg)
+            }
+          })
+        }
+      })
     }
   }
+}
 </script>
-
