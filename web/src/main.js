@@ -15,6 +15,7 @@ import AMap from 'vue-amap'
 
 Vue.use(VueCookie)
 Vue.config.productionTip = false
+window.SITE_CONFIG = {}
 
 // 非生产环境, 适配mockjs模拟数据                 // api: https://github.com/nuysoft/Mock
 if (process.env.NODE_ENV !== 'production') {
@@ -41,9 +42,7 @@ window.SITE_CONFIG['storeState'] = cloneDeep(store.state)
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: { App }
-})
+  render: h => h(App)
+}).$mount("#app");

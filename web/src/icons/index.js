@@ -17,7 +17,10 @@ import './iconfont.js'
 Vue.component('IconSvg', IconSvg)
 
 const svgFiles = require.context('./svg', true, /\.svg$/)
+
 const iconList = svgFiles.keys().map(item => svgFiles(item))
+console.log(iconList);
+
 
 export default {
   // 获取图标icon-(*).svg名称列表, 例如[shouye, xitong, zhedie, ...]

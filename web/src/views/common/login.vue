@@ -4,7 +4,7 @@
       <div class="site-content">
         <div class="login-title">
           <img :src="require('@/assets/img/logo.png')" style="width:80px;height:80px;" alt="">
-          人人快速开发平台
+          搭把手管理平台
         </div>
         <div class="login-main">
 
@@ -81,6 +81,7 @@ export default {
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.$cookie.set('token', data.token)
+              
               this.$router.replace({ name: 'home' })
             } else {
               this.getCaptcha()
@@ -171,10 +172,10 @@ export default {
       letter-spacing: 10px;
       text-align: center;
       position: absolute;
-      right: 11%;
+      right: 9%;
       top: 18%;
       transform: translateY(-50%);
-      width: 36%;
+      width: 40%;
     }
     .login-captcha {
       overflow: hidden;

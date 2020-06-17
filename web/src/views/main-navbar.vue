@@ -3,7 +3,7 @@
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
         <img :src="require('@/assets/img/logo.png')" class="logo-img" alt="">
-        <a class="site-navbar__brand-lg" href="javascript:;">人人快速开发平台</a>
+        <a class="site-navbar__brand-lg" href="javascript:;">搭把手管理平台</a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">
