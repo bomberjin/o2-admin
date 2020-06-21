@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * 系统菜单
  *
- * @author Mark sunlightcs@gmail.com
+ * @author bomber_jin@163.com
  */
 @RestController
 @RequestMapping("/sys/menu")

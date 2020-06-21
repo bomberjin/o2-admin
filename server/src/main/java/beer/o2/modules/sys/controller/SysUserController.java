@@ -15,7 +15,6 @@ import beer.o2.modules.sys.domain.user.vo.PasswordForm;
 import beer.o2.modules.sys.domain.user.vo.SysUserResponseVO;
 import beer.o2.modules.sys.service.SysUserRoleService;
 import beer.o2.modules.sys.service.SysUserService;
-import com.baomidou.mybatisplus.extension.api.R;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -28,7 +27,7 @@ import java.util.Map;
 /**
  * 系统用户
  *
- * @author Mark sunlightcs@gmail.com
+ * @author bomber_jin@163.com
  */
 @RestController
 @RequestMapping("/sys/user")
