@@ -1,4 +1,4 @@
-from registry.cn-shanghai.aliyuncs.com/dbshs-pub/openjdk:8-jdk-alpine
+FROM registry.cn-shanghai.aliyuncs.com/dbshs-pub/openjdk:8-jdk-alpine-font
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 VOLUME /tmp
 ARG JAR_FILE=target/admin-0.0.1-SNAPSHOT.jar
