@@ -13,14 +13,33 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Getter
 public class ServerConf {
+    /**
+     * 服务名称
+     */
     @Value("${server.name}")
     private String servername;
+
+    /**
+     * 端口号
+     */
     @Value("${server.port}")
     private String port;
+
+    /**
+     * ip地址
+     */
     @Value("${server.ip}")
     private String ip;
+
+    /**
+     * 激活文件
+     */
     @Value("${spring.profiles.active}")
     private String active;
+
+    /**
+     * 数据库地址
+     */
     @Value("${spring.datasource.url}")
     private String dataUrl;
 
